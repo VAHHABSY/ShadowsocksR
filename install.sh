@@ -9,19 +9,6 @@ export PATH
 #   Intro:  https://shadowsocks.be/9.html                         #
 #=================================================================#
 
-clear
-echo
-echo "#############################################################"
-echo "# One click Install ShadowsocksR Server                     #"
-echo "# Intro: https://shadowsocks.be/9.html                      #"
-echo "# Original Author: Teddysun <i@teddysun.com>                #"
-echo "# Updated Author (me): Samrand <me@samrand.me>              #"
-echo "# Best and Cheap VPS for 4\$: https://bit.ly/ssr_vps        #"
-echo "#############################################################"
-echo
-echo "The default choices are the best to bypass firewalls and being undetected."
-echo
-
 libsodium_file="libsodium-1.0.18"
 libsodium_url="https://github.com/jedisct1/libsodium/releases/download/1.0.18-RELEASE/libsodium-1.0.18.tar.gz"
 shadowsocks_r_file="shadowsocksr-3.2.2"
@@ -462,6 +449,11 @@ install(){
                 exit 2
             fi
         fi
+
+        # Fix shebang for Python 3 compatibility on systems without 'python' symlink
+        echo "Updating shebang lines for Python 3 compatibility..."
+        find /usr/local/shadowsocks -name "*.py" -exec sed -i 's|#!/usr/bin/env python[0-9]*|#!/usr/bin/env python3|g' {} \;
+        sed -i 's|#!/usr/bin/env python[0-9]*|#!/usr/bin/env python3|g' /etc/init.d/shadowsocks
 
         /etc/init.d/shadowsocks start
 
